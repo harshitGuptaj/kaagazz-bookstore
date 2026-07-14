@@ -1,0 +1,24 @@
+# Prevent directory listing
+Options -Indexes
+
+# Enable URL rewriting
+RewriteEngine On
+
+# Protect config files
+<Files "config/database.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Protect SQL files
+<Files "*.sql">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Set default character encoding
+AddDefaultCharset UTF-8
+
+# PHP settings
+php_value upload_max_filesize 10M
+php_value post_max_size 10M

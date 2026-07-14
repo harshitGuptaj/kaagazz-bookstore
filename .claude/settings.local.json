@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(C:/xampp/mysql/bin/mysql.exe -u root kaagazz_db -e \"SELECT id, name FROM categories;\")"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "code-review-graph"
+  ],
+  "enableAllProjectMcpServers": true
+}

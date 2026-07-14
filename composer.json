@@ -1,0 +1,11 @@
+{
+    "name": "kaagazz-bookstore",
+    "description": "KAAGAZZ Online Book Store",
+    "require": {
+        "php": ">=7.4",
+        "ext-mysqli": "*"
+    },
+    "scripts": {
+        "post-autoload-dump": []
+    }
+}
