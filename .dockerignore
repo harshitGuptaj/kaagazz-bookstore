@@ -1,0 +1,8 @@
+vendor/
+node_modules/
+.git
+*.log
+gh_output.txt
+gh_error.txt
+rw_out.txt
+rw_err.txt
