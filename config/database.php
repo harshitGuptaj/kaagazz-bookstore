@@ -33,27 +33,24 @@ if ($result && $result->num_rows === 0) {
     $schemaFile = __DIR__ . '/schema.sql';
     if (file_exists($schemaFile)) {
         $sql = file_get_contents($schemaFile);
+
+        // Remove SQL comments
+        $sql = preg_replace('/^\s*--.*$/m', '', $sql);
+
+        // Remove CREATE DATABASE and USE statements
         $sql = preg_replace('/CREATE DATABASE IF NOT EXISTS [^;]+;?\s*/i', '', $sql);
         $sql = preg_replace('/USE [^;]+;?\s*/i', '', $sql);
 
-        $current = '';
-        $inString = false;
-        for ($i = 0; $i < strlen($sql); $i++) {
-            $c = $sql[$i];
-            if ($c === "'" && ($i === 0 || $sql[$i-1] !== '\\')) {
-                $inString = !$inString;
-            }
-            if ($c === ';' && !$inString) {
-                $trimmed = trim($current);
-                if (!empty($trimmed) && $trimmed !== ';') {
-                    $conn->query($trimmed);
-                }
-                $current = '';
-            } else {
-                $current .= $c;
+        // Split by semicolons (safe now - no comments or multi-row INSERTs)
+        $statements = array_filter(array_map('trim', explode(';', $sql)));
+
+        foreach ($statements as $stmt) {
+            if (!empty($stmt)) {
+                @$conn->query($stmt);
             }
         }
 
+        // Fix admin password hash
         $correctHash = password_hash('admin123', PASSWORD_DEFAULT);
         $conn->query("UPDATE users SET password = '" . $conn->real_escape_string($correctHash) . "' WHERE email = 'admin@kaagazz.com'");
     }
